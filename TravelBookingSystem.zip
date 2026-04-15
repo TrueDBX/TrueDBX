@@ -1,1 +1,62 @@
 Just a TravelBookSystem, i created to test my skill at codding.
+EXAMPLE:
+
+// controllers/users.js
+const { getAllUsers, addUser } = require("../models/users");
+
+// Registar utilizador
+function register(req, res) {
+  const { name, email, password } = req.body;
+  const users = getAllUsers();
+
+  if (users.find(u => u.email === email)) {
+    return res.status(400).json({ error: "Email já registado." });
+  }
+
+  const newUser = {
+    id: users.length + 1,
+    name,
+    email,
+    password
+  };
+
+  addUser(newUser);
+  res.status(201).json({ message: "Utilizador registado com sucesso!", user: newUser });
+}
+
+// Login
+function login(req, res) {
+  const { email, password } = req.body;
+  const users = getAllUsers();
+
+  const user = users.find(u => u.email === email && u.password === password);
+  if (!user) {
+    return res.status(401).json({ error: "Credenciais inválidas." });
+  }
+
+  // 🔑 Guardar a sessão
+  req.session.user = user;
+
+  res.json({ message: "Login bem-sucedido!", user });
+}
+
+// Perfil (apenas se autenticado)
+function me(req, res) {
+  if (!req.session.user) {
+    return res.status(401).json({ error: "Não autenticado." });
+  }
+  res.json(req.session.user);
+}
+
+// Logout
+function logout(req, res) {
+  req.session.destroy(err => {
+    if (err) {
+      return res.status(500).json({ error: "Erro ao terminar sessão." });
+    }
+    res.json({ message: "Sessão terminada com sucesso." });
+  });
+}
+
+module.exports = { register, login, me, logout };
+
