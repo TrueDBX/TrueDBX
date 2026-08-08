@@ -10,7 +10,7 @@
 - JavaScript
 
 ## 📚 Sobre mim: 
-Recem- formormado em Tecnologias e Programação de Sistemas de informação (Nivel 5).
+Recem- formado em Tecnologias em Programação de Sistemas de informação (Nivel 5).
 Atualmente a desenvolvedor para melhorar as minhas competencias.
 
 ##
